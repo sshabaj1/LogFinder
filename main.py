@@ -1,8 +1,8 @@
 from ast import Set
 import os
 # Folder Path
-path = input('enter files path here: ')
-# path = "C:/Users/DOT/Downloads/debug_prod/Nuova cartella"
+# path = input('enter files path here: ')
+path = "C:/Users/DOT/Downloads/logs"
   
 # Change the directory
 os.chdir(path)
@@ -16,7 +16,7 @@ print('search words: ', search_words)
   
   
 def read_text_file(file_path,search_word):
-    with open(file_path) as f:
+    with open(file_path, encoding='utf8') as f:
         f = f.readlines()
         for line in f:
             for search_word in search_words:
