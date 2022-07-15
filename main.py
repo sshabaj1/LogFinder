@@ -24,7 +24,7 @@ def read_text_file(file_path,search_word):
                     print("word found in: ", file_path)
                     print(str(file_path))
                     matched_files.add(str(file_path))
-                    print(matched_files)
+                    print('-----------',matched_files)
 
                 
                     
@@ -40,4 +40,4 @@ for file in os.listdir():
   
         # call read text file function
         read_text_file(file_path, search_words)
-print(matched_files)
+print('matched files: ', matched_files)
