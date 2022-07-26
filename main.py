@@ -1,43 +1,42 @@
-from ast import Set
-import os
-# Folder Path
-# path = input('enter files path here: ')
-path = "C:/Users/DOT/Downloads/logs"
-  
-# Change the directory
-os.chdir(path)
+from classes.utilities.static_variables import StaticVariables
+from classes.pages.main_page  import  MainPage
 
 
-words_search = input("enter a word you want to search in file: ")
-search_words = list(words_search.split(','))
-matched_files = set()
-print('search words: ', search_words)
-# Read text File
-  
-  
-def read_text_file(file_path,search_word):
-    with open(file_path, encoding='utf8') as f:
-        f = f.readlines()
-        for line in f:
-            for search_word in search_words:
-                if search_word in line:
-                    print("word found in: ", file_path)
-                    print(str(file_path))
-                    matched_files.add(str(file_path))
-                    print('-----------',matched_files)
+import tkinter as tk
+import sys
 
-                
-                    
-  
-  
-# iterate through all file
-for file in os.listdir():
-    print('enterd in for loop file: ', file)
-    # Check whether file is in text format or not
-    if file.endswith(".log"):
-        file_path = f"{path}\{file}"
-        print('file_path: ', file_path)
-  
-        # call read text file function
-        read_text_file(file_path, search_words)
-print('matched files: ', matched_files)
+
+
+
+
+class MainApp(tk.Tk):
+    def __init__(self):
+        tk.Tk.__init__(self)
+        self._Canvas= None
+        self.switch_Canvas(StaticVariables.MAIN_PAGE)
+
+    
+    def switch_Canvas(self, Canvas_class):
+        # function_name = sys._getframe().f_code.co_name
+        # LogHandler.info_log(self, function_name, '', '')
+            
+        template_canvas_class = getattr(sys.modules[__name__], Canvas_class)
+        new_Canvas = template_canvas_class(self)
+        if self._Canvas is not None:
+            self._Canvas.destroy()
+        self._Canvas = new_Canvas
+        self._Canvas.pack()
+
+    # def __init__(self):
+    #     tk.Tk.__init__(self)
+    #     self._Canvas= tk.Canvas(self , bg = 'red', width = 345,height = 518)
+    #     self.canvas.pack(fill = "both", expand = True)
+    #     tk.title('')
+    #     tk.iconbitmap(r'./static/cobra_logo.ico')
+
+
+
+
+if __name__ == '__main__':
+    app = MainApp()
+    app.mainloop()
