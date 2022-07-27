@@ -24,6 +24,20 @@ class MainPage(tk.Frame):
         master.title('Log Finder')
 
 
+
+        self.blue_obj = tk.PhotoImage(file ='static/png/blue_obj.png')
+        blue_obj_image = self.canvas.create_image(5, 50, image = self.blue_obj, anchor=tk.NW)
+
+        self.qatar_logo = tk.PhotoImage(file ='static/png/qatar_logo.png')
+        qatar_logo_image = self.canvas.create_image(20, 450, image = self.qatar_logo, anchor=tk.NW)
+
+        self.open_folder = tk.PhotoImage(file ='static/png/open_folder.png')
+        self.search_logo = tk.PhotoImage(file ='static/png/search_logo.png')
+
+
+
+
+
         global result_window
         global path
         global files_list
@@ -76,8 +90,8 @@ class MainPage(tk.Frame):
             
 
 
-        browse_button = tk.Button( self, text='Browse Files', borderwidth=2,  bg='white', command=browse_button_handler)
-        browse_button_canvas = self.canvas.create_window( 100, 250, anchor = "nw",window = browse_button)
+        browse_button = tk.Button( self, image=self.open_folder, borderwidth=0,  bg='white', command=browse_button_handler)
+        browse_button_canvas = self.canvas.create_window( 170, 250, anchor = "nw",window = browse_button)
 
-        search_button = tk.Button( self, text='Search', borderwidth=2,  bg='white', command=search_button_handler)
-        search_button_canvas = self.canvas.create_window( 220, 250, anchor = "nw",window =search_button)
+        search_button = tk.Button( self, image=self.search_logo, borderwidth=0,  bg='white', command=search_button_handler)
+        search_button_canvas = self.canvas.create_window( 270, 235, anchor = "nw",window =search_button)
