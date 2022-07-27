@@ -40,7 +40,7 @@ class MainPage(tk.Frame):
         global result_window
         global files_list
         global entry_search_word
-        path = None
+        
 
            
         self.debug_image = tk.PhotoImage(file =f'static/png/debug/{DebugHandler.debug_status}.png')
@@ -86,6 +86,19 @@ class MainPage(tk.Frame):
             no_result_canvas = result_window_canvas.create_window( 50, 50, anchor = "nw",window = no_result_label)
 
 
+        def handle_no_word_writen():
+            function_name = sys._getframe().f_code.co_name
+            LogHandler.info_log(self, function_name, '', '')
+
+            result_window  = tk.Toplevel(self.canvas)
+            result_window.title('Search Error')
+            result_window.geometry('200x200')
+            result_window_canvas = tk.Canvas(result_window , width = 250,height = 250, bg='white')
+            result_window_canvas.pack(fill = "both", expand = True)
+            no_result_label = tk.Label(result_window, text='No Keyword Writen', foreground='black', bg='white')
+            no_result_canvas = result_window_canvas.create_window( 50, 50, anchor = "nw",window = no_result_label)
+
+
 
         def browse_button_handler():
             function_name = sys._getframe().f_code.co_name
@@ -109,14 +122,19 @@ class MainPage(tk.Frame):
             else:
                 logs_path = self.path
                 search_words = entry_search_word.get()
-                files_list  =  SearchHandler.search_logs(logs_path, search_words)
-                print('MainPage/files_list: ', files_list)
-                if len(files_list) > 1:
-                    master.get_file_list(files_list)
-                    master.switch_Canvas('ResultListPage')
-                    print('MainPage/files: ', files_list)
+                if len(search_words) > 0:
+                    files_list  =  SearchHandler.search_logs(logs_path, search_words)
+                    if files_list == 'ERROR':
+                        handle_no_path_selected()
+                    else:
+                        LogHandler.debug_log(self, function_name, 'files_list', files_list)
+                        if len(files_list) > 1:
+                            master.get_file_list(files_list)
+                            master.switch_Canvas('ResultListPage')
+                        else:
+                            handle_no_results()
                 else:
-                    handle_no_results()
+                    handle_no_word_writen()
             
 
         
