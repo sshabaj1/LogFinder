@@ -1,4 +1,5 @@
-from classes.handlers.record_return import RecordReturn
+from classes.handlers.debug_handler import DebugHandler
+from classes.handlers.log_handler import LogHandler
 
 
 
@@ -30,8 +31,6 @@ class ResultListPage(tk.Frame):
         tv1 = ttk.Treeview(search_frame, columns=(1), show='headings', height='5')
         tv1.place(relheight=1, relwidth=1)
         tv1.heading(1, text='File Name')
-        # tv1.heading(2, text='Path')
-
 
         scroll_bar_y = tk.Scrollbar(search_frame, orient='vertical', command=tv1.yview)
         scroll_bar_x = tk.Scrollbar(search_frame, orient='horizontal', command=tv1.xview)
@@ -43,29 +42,36 @@ class ResultListPage(tk.Frame):
         file_list = list(master.set_file_list())
         print('ResultListPage/fileList1: ', file_list)
 
+
+
         def on_double_click(event):
-            print('ResultListPage/event: ', event)
+            function_name = sys._getframe().f_code.co_name
+            LogHandler.info_log(self, function_name, '', '')
+
+            LogHandler. debug_log(self, function_name, 'event', event)
             item = tv1.identify('item', event.x, event.y)
             item_nr = int(item[1:])
             item_nr -= 1
             clicked_record = file_list[item_nr]
-            print('ResultListPage/clicked_record: ', clicked_record.replace('\\','/'))
+            LogHandler. debug_log(self, function_name, 'clicked_record', clicked_record.replace('\\','/'))
             master.open_file(clicked_record)
 
         for file in file_list:
+            LogHandler. debug_log(self, 'on_double_click/for loop/', 'file', file)
             correct_path = file.replace('\\', '/')
-            print('ResultListPage/file: ', file)
-            file_path  = correct_path.rsplit('/',1)
+            LogHandler. debug_log(self, 'on_double_click/for loop/', 'correct_path', correct_path)
             file_name = correct_path.rsplit('/',1)[1]
-            print('ResultListPage/file_name_raw: ', file_name)
-            # file_name = (file_name_raw.split("\\"))[1]
-            # print('ResultListPage/fileName1: ', file_name)
+            LogHandler. debug_log(self, 'on_double_click/for loop/', 'file_name', file_name)
             tv1.insert('', 'end', values=file_name)
         tv1.bind('<Double-1>', on_double_click)
 
 
 
+
         def handle_back():
+            function_name = sys._getframe().f_code.co_name
+            LogHandler.info_log(self, function_name, '', '')
+            
             new_dir = master.set_dir()
             os.chdir(new_dir)
             master.switch_Canvas('MainPage')
