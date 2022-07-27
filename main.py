@@ -18,6 +18,8 @@ class MainApp(tk.Tk):
 
     global path
     global files_list
+    global main_dir
+    main_dir = os.getcwd()
     path = ''
     files_list = []
     
@@ -56,6 +58,10 @@ class MainApp(tk.Tk):
 
     def open_file(self,fileName):
         os.system("start " + fileName)
+
+    def set_dir(self):
+        print('MainApp/main_dir: ', main_dir)
+        return main_dir
     
 
 

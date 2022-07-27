@@ -66,7 +66,8 @@ class ResultListPage(tk.Frame):
 
 
         def handle_back():
-            os.chdir('C:/Users/DOT/Documents/Scripts/LogFinder')
+            new_dir = master.set_dir()
+            os.chdir(new_dir)
             master.switch_Canvas('MainPage')
 
 
