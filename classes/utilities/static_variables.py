@@ -1,6 +1,5 @@
 
 
-
 class StaticVariables():
     MAIN_PAGE_STRING = 'MainPage'
     RESULT_LIST_STRING = 'ResultListPage'
