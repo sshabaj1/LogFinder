@@ -20,9 +20,12 @@ class LogHandler():
     def create_log_file(self):
         today = date.today()
         log_dir = today.strftime("%d-%m-%Y")
+        main_dir = os.getcwd()
+        dir_list =main_dir.split('\\')
+
         DirectoryHandler.mkdir_today(self, 'logs')
-        num_of_frames = (len(os.listdir(f'logs/{log_dir}')) + 1)
-        log_path = f'logs/{log_dir}//LOG{num_of_frames}.log'
+        num_of_frames = (len(os.listdir(f'{dir_list[0]}/{dir_list[1]}/{dir_list[2]}/Documents/logs/{log_dir}')) + 1)
+        log_path = f'{dir_list[0]}/{dir_list[1]}/{dir_list[2]}/Documents/logs/{log_dir}//LOG{num_of_frames}.log'
         logging.basicConfig(filename=log_path, filemode='w',
                             format='%(asctime)s - %(levelname)s - %(message)s')
 
