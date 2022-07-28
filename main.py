@@ -19,7 +19,7 @@ class MainApp(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
         self._Canvas= None
-        self.switch_Canvas(StaticVariables.MAIN_PAGE)
+        self.switch_Canvas(StaticVariables.MAIN_PAGE_STRING)
 
     global path
     global files_list
@@ -73,6 +73,9 @@ class MainApp(tk.Tk):
         LogHandler.info_log(self, function_name, '', '')
 
         os.system("start " + fileName)
+
+
+    
 
     def set_dir(self):
         function_name = sys._getframe().f_code.co_name

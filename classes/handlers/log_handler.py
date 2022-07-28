@@ -1,6 +1,8 @@
 from classes.handlers.directory_handler import DirectoryHandler
 from classes.handlers.debug_handler import DebugHandler
 
+from classes.utilities.static_variables import StaticVariables
+
 from inspect import currentframe, getframeinfo
 import logging
 from datetime import datetime
@@ -25,8 +27,7 @@ class LogHandler():
 
 
     def debug_log(self, function_name, context_name,context):
-        print('DebugHandler.debug_status: ', DebugHandler.debug_status)
-        if DebugHandler.debug_status == 'ON':
+        if DebugHandler.debug_status == StaticVariables.ON_STRING:
             print('enterd at debug log') 
             logger=logging.getLogger()
             logger.setLevel(logging.DEBUG)
@@ -39,8 +40,7 @@ class LogHandler():
         
         
     def info_log(self, function_name, context_name,context):
-        print('DebugHandler.debug_status: ', DebugHandler.debug_status)
-        if DebugHandler.debug_status == 'ON':
+        if DebugHandler.debug_status == StaticVariables.ON_STRING:
             logger=logging.getLogger()
             logger.setLevel(logging.INFO)
             frameinfo = getframeinfo(currentframe())
@@ -51,8 +51,7 @@ class LogHandler():
             logger.info(f'{LOG_DETAILS}')
     
     def critical_log(self, function_name, context_name, context):
-        print('DebugHandler.debug_status: ', DebugHandler.debug_status)
-        if DebugHandler.debug_status == 'ON':
+        if DebugHandler.debug_status == StaticVariables.ON_STRING:
             logger=logging.getLogger()
             logger.setLevel(logging.CRITICAL)
             frameinfo = getframeinfo(currentframe())

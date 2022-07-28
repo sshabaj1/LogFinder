@@ -1,6 +1,8 @@
 from classes.handlers.debug_handler import DebugHandler
 from classes.handlers.log_handler import LogHandler
 
+from classes.utilities.static_variables import StaticVariables
+
 
 
 
@@ -19,11 +21,16 @@ class ResultListPage(tk.Frame):
 
 
     def __init__(self, master, *args, **kwargs):
-
+        dir = (master.set_dir()).replace('\\', '/')
         tk.Frame.__init__(self,master, *args, **kwargs)
         self.canvas = tk.Canvas(self, bg = 'DeepSky Blue2' ,width = 668,height = 550, relief="sunken")
         self.canvas.pack(fill = "both", expand = True)
+        master.iconbitmap(f'{dir}/{StaticVariables.APP_ICON}')
         master.title('Results')
+
+        dir = (master.set_dir()).replace('\\', '/')
+
+        self.back_image = tk.PhotoImage(file =f'{dir}/{StaticVariables.BACK_LOGO}')
 
         search_frame = tk.LabelFrame(self.canvas, text='Search Data')
         search_frame.place(height=470, width=670)
@@ -40,7 +47,6 @@ class ResultListPage(tk.Frame):
 
         path = master.set_path()
         file_list = list(master.set_file_list())
-        print('ResultListPage/fileList1: ', file_list)
 
 
 
@@ -74,7 +80,7 @@ class ResultListPage(tk.Frame):
             
             new_dir = master.set_dir()
             os.chdir(new_dir)
-            master.switch_Canvas('MainPage')
+            master.switch_Canvas(StaticVariables.MAIN_PAGE_STRING)
 
 
 
@@ -83,5 +89,5 @@ class ResultListPage(tk.Frame):
 
 
 
-        back_button = tk.Button( self, text='Back', borderwidth=0, bg='white', command=handle_back)
-        back_button_canvas = self.canvas.create_window( 50, 500, anchor = "nw",window = back_button)
+        back_button = tk.Button( self, image=self.back_image, borderwidth=0, bg='DeepSky Blue2', command=handle_back)
+        back_button_canvas = self.canvas.create_window( 30, 480, anchor = "nw",window = back_button)

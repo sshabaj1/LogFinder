@@ -17,6 +17,7 @@ from typing import TYPE_CHECKING
 class MainPage(tk.Frame):
 
     path = None
+    page_number = 1
 
     if TYPE_CHECKING:
         from main import MainApp
@@ -24,18 +25,14 @@ class MainPage(tk.Frame):
 
     def __init__(self, master, *args, **kwargs):
 
-        # self is now an istance of tk.Frame
         tk.Frame.__init__(self,master, *args, **kwargs)
-        # make a new Canvas whose parent is self.
         self.canvas = tk.Canvas(self, bg = 'white' ,width = 520,height = 520)
         self.canvas.pack(fill = "both", expand = True)
-        master.title('Log Finder')
+        master.iconbitmap(StaticVariables.APP_ICON)
+        master.title(StaticVariables.LOG_FINDER)
 
         dir =  os.getcwd()
-        print('dir: ', dir)
 
-
-        
         global debug_image
         global result_window
         global files_list
@@ -44,14 +41,14 @@ class MainPage(tk.Frame):
 
            
         self.debug_image = tk.PhotoImage(file =f'static/png/debug/{DebugHandler.debug_status}.png')
-        self.blue_obj = tk.PhotoImage(file =f'static/png/blue_obj.png')
-        blue_obj_image = self.canvas.create_image(5, 50, image = self.blue_obj, anchor=tk.NW)
 
-        self.qatar_logo = tk.PhotoImage(file =r'./static/png/qatar_logo.png')
-        qatar_logo_image = self.canvas.create_image(20, 450, image = self.qatar_logo, anchor=tk.NW)
+        self.help_image = tk.PhotoImage(file =StaticVariables.HELP_LOGO)
 
-        self.open_folder = tk.PhotoImage(file =r'./static/png/open_folder.png')
-        self.search_logo = tk.PhotoImage(file =r'./static/png/search_logo.png')
+        self.main_page_logo = tk.PhotoImage(file=StaticVariables.MAIN_PAGE_LOGO)
+        main_page_logo_image = self.canvas.create_image(180, 70, image = self.main_page_logo, anchor=tk.NW)
+
+        self.open_folder = tk.PhotoImage(file =StaticVariables.OPEN_FOLDER_PATH)
+        self.search_logo = tk.PhotoImage(file =StaticVariables.SEARCH_LOGO_PATH)
 
         entry_search_word = tk.Entry(self.canvas)
 
@@ -64,12 +61,12 @@ class MainPage(tk.Frame):
             LogHandler.info_log(self, function_name, '', '')
 
             result_window  = tk.Toplevel(self.canvas)
-            result_window.title('No Results')
+            result_window.title(StaticVariables.NO_RESULT_STRING)
             result_window.geometry('200x200')
             result_window_canvas = tk.Canvas(result_window , width = 250,height = 250, bg='white')
             result_window_canvas.pack(fill = "both", expand = True)
-            no_result_label = tk.Label(result_window, text='No Result', foreground='black', bg='white')
-            no_result_canvas = result_window_canvas.create_window( 70, 50, anchor = "nw",window = no_result_label)
+            no_result_label = tk.Label(result_window, text=StaticVariables.NO_RESULTS_RETURNED, foreground='black', bg='white')
+            no_result_canvas = result_window_canvas.create_window( 40, 50, anchor = "nw",window = no_result_label)
 
 
         
@@ -78,12 +75,13 @@ class MainPage(tk.Frame):
             LogHandler.info_log(self, function_name, '', '')
 
             result_window  = tk.Toplevel(self.canvas)
-            result_window.title('Path Error')
+            result_window.iconbitmap(StaticVariables.APP_ICON)
+            result_window.title(StaticVariables.PATH_ERROR_STRING)
             result_window.geometry('200x200')
             result_window_canvas = tk.Canvas(result_window , width = 250,height = 250, bg='white')
             result_window_canvas.pack(fill = "both", expand = True)
-            no_result_label = tk.Label(result_window, text='No Path Selected', foreground='black', bg='white')
-            no_result_canvas = result_window_canvas.create_window( 50, 50, anchor = "nw",window = no_result_label)
+            no_result_label = tk.Label(result_window, text=StaticVariables.NO_PATH_SELECTED_STRING, foreground='black', bg='white')
+            no_result_canvas = result_window_canvas.create_window( 10, 50, anchor = "nw",window = no_result_label)
 
 
         def handle_no_word_writen():
@@ -91,13 +89,53 @@ class MainPage(tk.Frame):
             LogHandler.info_log(self, function_name, '', '')
 
             result_window  = tk.Toplevel(self.canvas)
-            result_window.title('Search Error')
+            result_window.iconbitmap(StaticVariables.APP_ICON)
+            result_window.title(StaticVariables.SEARCH_ERROR_STRING)
             result_window.geometry('200x200')
             result_window_canvas = tk.Canvas(result_window , width = 250,height = 250, bg='white')
             result_window_canvas.pack(fill = "both", expand = True)
-            no_result_label = tk.Label(result_window, text='No Keyword Writen', foreground='black', bg='white')
+            no_result_label = tk.Label(result_window, text=StaticVariables.NO_KEYWORD_WRITEN_STRING, foreground='black', bg='white')
             no_result_canvas = result_window_canvas.create_window( 50, 50, anchor = "nw",window = no_result_label)
 
+
+        def handle_help_button():
+            function_name = sys._getframe().f_code.co_name
+            LogHandler.info_log(self, function_name, '', '')
+
+            self.page_number = 1
+
+            result_window  = tk.Toplevel(self.canvas)
+            result_window.iconbitmap(StaticVariables.APP_ICON)
+            result_window.title(StaticVariables.HELP_STRING)
+            result_window.geometry('520x400')
+            result_window_canvas = tk.Canvas(result_window , width = 250,height = 250, bg='white')
+            result_window_canvas.pack(fill = "both", expand = True)
+
+            result_window.help_png = tk.PhotoImage(file=f'{StaticVariables.HELP_PHOTOS_PATH}/{self.page_number}.png')
+            help_png_images = result_window_canvas.create_image(0, 0, image = result_window.help_png, anchor=tk.NW)
+
+
+            
+
+            def handle_next_button():
+                if self.page_number < 7:
+                    self.page_number += 1
+                    result_window.help_png.config(file=f'{StaticVariables.HELP_PHOTOS_PATH}/{self.page_number}.png')
+
+            def handle_back_button():
+                if self.page_number > 1:
+                    self.page_number -= 1
+                    result_window.help_png.config(file=f'{StaticVariables.HELP_PHOTOS_PATH}/{self.page_number}.png')
+
+            self.back_button_img = tk.PhotoImage(file =StaticVariables.SMALL_BACK_BUTTON)
+            self.next_button_img = tk.PhotoImage(file =StaticVariables.SMALL_NEXT_BUTTON)
+
+            back_button = tk.Button( result_window, image=self.back_button_img, borderwidth=0,  bg='white', command=handle_back_button)
+            back_button_canvas = result_window_canvas.create_window( 30, 350, anchor = "nw",window = back_button)
+
+            next_button = tk.Button( result_window, image=self.next_button_img, borderwidth=0,  bg='white', command=handle_next_button)
+            next_button_canvas = result_window_canvas.create_window( 460, 350, anchor = "nw",window = next_button)
+            
 
 
         def browse_button_handler():
@@ -105,11 +143,10 @@ class MainPage(tk.Frame):
             LogHandler.info_log(self, function_name, '', '')
 
             filename = filedialog.askopenfilename()
-            print('MainPage/filename: ', filename)
             path_list = filename.rsplit('/',1)
             self.path = path_list[0]
             master.get_path(self.path)
-            print('MainPage/path: ', self.path)
+
             
 
         
@@ -124,13 +161,13 @@ class MainPage(tk.Frame):
                 search_words = entry_search_word.get()
                 if len(search_words) > 0:
                     files_list  =  SearchHandler.search_logs(logs_path, search_words)
-                    if files_list == 'ERROR':
+                    if files_list == StaticVariables.ERROR_STRING:
                         handle_no_path_selected()
                     else:
                         LogHandler.debug_log(self, function_name, 'files_list', files_list)
                         if len(files_list) > 1:
                             master.get_file_list(files_list)
-                            master.switch_Canvas('ResultListPage')
+                            master.switch_Canvas(StaticVariables.RESULT_LIST_STRING)
                         else:
                             handle_no_results()
                 else:
@@ -142,16 +179,14 @@ class MainPage(tk.Frame):
             function_name = sys._getframe().f_code.co_name
             LogHandler.info_log(self, function_name, '', '')
 
-            if DebugHandler.debug_status =='OFF':
-                DebugHandler.debug_status ='ON'
-                print('debug  mode: ', DebugHandler.debug_status)
-                self.debug_image.config(file='static/png/debug/ON.png')
+            if DebugHandler.debug_status ==StaticVariables.OFF_STRING:
+                DebugHandler.debug_status =StaticVariables.ON_STRING
+                self.debug_image.config(file=StaticVariables.ON_DEBUG_PATH)
                 LogHandler.create_log_file(self)
             else:
-                DebugHandler.debug_status == 'ON'
-                DebugHandler.debug_status ='OFF'
-                print('debug  mode: ', DebugHandler.debug_status)
-                self.debug_image.config(file='static/png/debug/OFF.png')
+                DebugHandler.debug_status == StaticVariables.ON_STRING
+                DebugHandler.debug_status =StaticVariables.OFF_STRING
+                self.debug_image.config(file=StaticVariables.OFF_DEBUG_PATH)
                 
             
 
@@ -164,3 +199,6 @@ class MainPage(tk.Frame):
 
         debug_button = tk.Button( self, image=self.debug_image, borderwidth=0,  bg='white', command=handle_debug_button)
         debug_button_canvas = self.canvas.create_window( 10, 10, anchor = "nw",window = debug_button)
+
+        help_button = tk.Button( self, image=self.help_image, borderwidth=0,  bg='white', command=handle_help_button)
+        help_button_canvas = self.canvas.create_window( 10, 480, anchor = "nw",window = help_button)
